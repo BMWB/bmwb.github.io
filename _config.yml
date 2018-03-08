@@ -1,6 +1,6 @@
 # Site settings
-title: WTJ Blog
-SEOTitle: 王天骥的博客 | Hux Blog
+title: 王天骥的博客
+SEOTitle: 王天骥的博客
 header-img: img/home-bg.jpg
 email: 1321024484@qq.com
 description: "流水下山非有意，片云归洞本无心，人生若的如云水，铁树开花边界春。 这里是 @WTJ王天骥 的个人博客，与你一起发现更大的世界。"
@@ -67,7 +67,7 @@ ga_domain: bmwb
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "写写代码，做做设计，<br>离开世界之前，一切都是过程"
+sidebar-about-description: "流水下山非有意，片云归洞本无心，人生若的如云水，铁树开花边界春"
 sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
