@@ -4,7 +4,7 @@ SEOTitle: 王天骥的博客 | Hux Blog
 header-img: img/home-bg.jpg
 email: 1321024484@qq.com
 description: "流水下山非有意，片云归洞本无心，人生若的如云水，铁树开花边界春。 这里是 @WTJ王天骥 的个人博客，与你一起发现更大的世界。"
-keyword: "王天骥"
+keyword: "王天骥，wtj"
 url: "https://bmwb.github.io"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -61,7 +61,7 @@ netease_comment: false
 
 # Google Analytics
 ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+ga_domain: bmwb
 
 
 
