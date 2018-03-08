@@ -12,10 +12,10 @@ baseurl: ""                             # for example, '/blog' if your blog host
 
 # SNS settings
 RSS: false
-weibo_username:     huxpro
-zhihu_username:     huxpro
-github_username:    huxpro
-twitter_username:   huxpro
+weibo_username:     BMWB
+zhihu_username:     BMWB
+github_username:    BMWB
+# twitter_username:   huxpro
 #facebook_username:  huxpro
 # linkedin_username:  firstname-lastname-idxxxx
 
@@ -48,7 +48,7 @@ kramdown:
 
 
 # Disqus settings
-disqus_username: hux
+disqus_username: wtj
 
 # Netease setttings
 netease_comment: false
@@ -68,7 +68,7 @@ ga_domain: bmwb
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "流水下山非有意，片云归洞本无心，人生若的如云水，铁树开花边界春"
-sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar-wtj.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
