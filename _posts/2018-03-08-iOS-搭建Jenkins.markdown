@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      "iOS搭建Jenkins"
+subtitle:   "iOS搭建Jenkins笔记"
+date:       2018-03-08
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+
+---
+
+
+
 ## 一.环境配置
 
 环境配置请参考[jenkins持续集成iOS项目](http://www.jianshu.com/p/53636eb87fe8)

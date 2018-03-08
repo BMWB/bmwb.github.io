@@ -1,3 +1,15 @@
+---
+layout:     post
+title:      "iOS搭建Fastlane"
+subtitle:   "iOS搭建Fastlane笔记"
+date:       2018-03-08
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+---
+
 ### 一、环境配置
 
 - #### 安装rbenv

@@ -1,3 +1,15 @@
+---
+layout:     post
+title:      "iOS编码规范"
+subtitle:   "iOS编码规范笔记"
+date:       2018-03-08
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+---
+
 # 摘要
 
 为了规范看准iOS编码而作。主要包含编码格式和命名规范两大章节。
