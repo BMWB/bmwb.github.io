@@ -1,0 +1,1006 @@
+# 摘要
+
+为了规范看准iOS编码而作。主要包含编码格式和命名规范两大章节。
+
+在写之前对下面所用的有些词汇进行一些约定：
+
+- 方法 method：类，协议中国所定义的函数
+- 函数 function：
+
+[Difference between a method and a function](https://stackoverflow.com/questions/155609/difference-between-a-method-and-a-function)
+
+阅读本文的时候，心中要有[作用域](https://en.wikipedia.org/wiki/Scope_(computer_science))概念，常量，函数的命名变化主要是因为作用域的不同才体现出区别。
+
+- 表达式作用域
+- 块作用域
+- 函数作用域
+- 文件作用域
+- 模块作用域
+- 全局作用域
+
+
+
+
+# 编码格式
+
+> 我们使用空格缩进。你应该将编辑器设置成自动将制表符替换成空格。
+
+
+
+## 行宽
+
+尽量让你的代码保持在120列之内。
+
+我们深知 Objective-C 是一门繁冗的语言，在某些情况下略超 120 列可能有助于提高可读性，但这也只能是特例而已，不能成为开脱。
+
+如果阅读代码的人认为把把某行行宽保持在 120 列仍然有不失可读性，你应该按他们说的去做。
+
+我们意识到这条规则是有争议的，但很多已经存在的代码坚持了本规则，我们觉得保证一致性更重要。
+
+通过设置 *Xcode > Preferences > Text Editing > Show page guide*，来使越界更容易被发现。
+
+
+
+## 方法声明和定义
+
+> \- + 和返回类型之间须使用一个空格，参数列表中只有参数之间可以有空格。
+
+方法应该像这样：
+
+```objective-c
+- (void)doSomethingWithString:(NSString *)theString {
+...
+}
+```
+
+如果一行有非常多的参数，更好的方式是将每个参数单独拆成一行。如果使用多行，将每个参数前的冒号对齐。
+
+```objective-c
+- (void)doSomethingWith:(GTMFoo *)theFoo
+rect:(NSRect)theRect
+interval:(float)theInterval {
+...
+}
+```
+
+当第一个关键字比其它的短时，保证下一行至少有 4 个空格的缩进。这样可以使关键字垂直对齐，而不是使用冒号对齐：
+
+```objective-c
+- (void)short:(GTMFoo *)theFoo
+longKeyword:(NSRect)theRect
+evenLongerKeyword:(float)theInterval {
+...
+}
+```
+
+
+
+## 方法调用
+
+> 方法调用应尽量保持与方法声明的格式一致。当格式的风格有多种选择时，新的代码要与已有代码保持一致。
+
+调用时所有参数应该在同一行：
+
+```
+[myObject doFooWith:arg1 name:arg2 error:arg3];
+```
+
+或者每行一个参数，以冒号对齐：
+
+```
+[myObject doFooWith:arg1
+name:arg2
+error:arg3];
+```
+
+不要使用下面的缩进风格：
+
+```objective-c
+[myObject doFooWith:arg1 name:arg2  // some lines with >1 arg
+error:arg3];
+
+[myObject doFooWith:arg1
+name:arg2 error:arg3];
+
+[myObject doFooWith:arg1
+name:arg2  // aligning keywords instead of colons
+error:arg3];
+```
+
+方法定义与方法声明一样，当关键字的长度不足以以冒号对齐时，下一行都要以四个空格进行缩进。
+
+```
+[myObj short:arg1
+longKeyword:arg2
+evenLongerKeyword:arg3];
+```
+
+
+
+## `@public` 和 `@private`
+
+> `@public` 和 `@private` 访问修饰符应该左对齐。
+
+```
+@interface MyClass : NSObject {
+@public
+...
+@private
+...
+}
+
+@end
+```
+
+
+
+## 异常
+
+> 每个 `@` 标签应该有独立的一行，在 `@` 与 `{}` 之间需要有一个空格， `@catch` 与被捕捉到的异常对象的声明之间也要有一个空格。
+
+
+
+如果你决定使用 Objective-C 的异常，那么就按下面的格式。不过你最好先看看 [避免抛出异常](http://zh-google-styleguide.readthedocs.io/en/latest/google-objc-styleguide/features/#avoid-throwing-exceptions) 了解下为什么不要使用异常。
+
+```objective-c
+@try {
+foo();
+}
+@catch (NSException *ex) {
+bar(ex);
+}
+@finally {
+baz();
+}
+```
+
+
+
+## 协议名
+
+> 类型标识符和尖括号内的协议名之间，不能有任何空格。
+
+这条规则适用于类声明、实例变量以及方法声明。例如：
+
+```
+@interface MyProtocoledClass : NSObject<NSWindowDelegate> {
+@private
+id<MyFancyDelegate> delegate_;
+}
+- (void)setDelegate:(id<MyFancyDelegate>)aDelegate;
+@end
+```
+
+
+
+## 块（闭包）
+
+> 块（block）适合用在 target/selector 模式下创建回调方法时，因为它使代码更易读。块中的代码应该缩进 4 个空格。
+
+取决于块的长度，下列都是合理的风格准则：
+
+- 关括号应与块声明的第一个字符对齐。
+- 块内的代码须按 4 空格缩进。
+- 如果块太长，比如超过 20 行，建议把它定义成一个局部变量，然后再使用该变量。
+- 如果块不带参数，`^{` 之间无须空格。如果带有参数，`^(` 之间无须空格，但 `) {` 之间须有一个空格。
+
+
+
+```objective-c
+// The entire block fits on one line.
+[operation setCompletionBlock:^{
+[self onOperationDone];
+}];
+
+// The block can be put on a new line, indented four spaces, with the
+// closing brace aligned with the first character of the line on which
+// block was declared.
+[operation setCompletionBlock:^{
+[self.delegate newDataAvailable];
+}];
+
+// Using a block with a C API follows the same alignment and spacing
+// rules as with Objective-C.
+dispatch_async(fileIOQueue_, ^{
+NSString* path = [self sessionFilePath];
+if (path) {
+// ...
+}
+});
+
+// An example where the parameter wraps and the block declaration fits
+// on the same line. Note the spacing of |^(SessionWindow *window) {|
+// compared to |^{| above.
+[[SessionService sharedService]
+loadWindowWithCompletionBlock:^(SessionWindow *window) {
+if (window) {
+[self windowDidLoad:window];
+} else {
+[self errorLoadingWindow];
+}
+}];
+
+// An example where the parameter wraps and the block declaration does
+// not fit on the same line as the name.
+[[SessionService sharedService]
+loadWindowWithCompletionBlock:
+^(SessionWindow *window) {
+if (window) {
+[self windowDidLoad:window];
+} else {
+[self errorLoadingWindow];
+}
+}];
+
+// Large blocks can be declared out-of-line.
+void (^largeBlock)(void) = ^{
+// ...
+};
+[operationQueue_ addOperationWithBlock:largeBlock];
+```
+
+
+
+## 点语法
+
+应该 **始终** 使用点语法来访问或者修改属性，访问其他实例时首选括号。
+
+**推荐：**
+
+```
+view.backgroundColor = [UIColor orangeColor];
+[UIApplication sharedApplication].delegate;
+```
+
+**反对：**
+
+```
+[view setBackgroundColor:[UIColor orangeColor]];
+UIApplication.sharedApplication.delegate;
+```
+
+## 间距
+
+- 一个缩进使用 4 个空格，永远不要使用制表符（tab）缩进。请确保在 Xcode 中设置了此偏好。
+- 方法的大括号和其他的大括号（`if`/`else`/`switch`/`while` 等等）始终和声明在同一行开始，在新的一行结束。
+
+**推荐：**
+
+```
+if (user.happy) {
+// Do something
+dfksfaf\fa
+fdsfafsa
+}
+else {
+// Do something else
+}
+```
+
+- 方法之间应该正好空一行，这有助于视觉清晰度和代码组织性。在方法中的功能块之间应该使用空白分开，但往往可能应该创建一个新的方法。
+
+```
+- (void)do {
+module1
+
+module2
+}
+```
+
+​
+​
+​- `@synthesize` 和 `@dynamic` 在实现中每个都应该占一个新行。
+​
+​## 条件判断
+​
+​条件判断主体部分应该始终使用大括号括住来防止出错，即使它可以不用大括号（例如它只需要一行）。这些错误包括添加第二行（代码）并希望它是 if 语句的一部分时。当 if 语句里面的一行被注释掉，下一行就会在不经意间成为了这个 if 语句的一部分。此外，这种风格也更符合所有其他的条件判断，因此也更容易检查。
+​
+​**推荐：**
+​
+​```
+​if (!error) {
+​return success;
+​}
+​```
+​
+​**反对：**
+​
+​```
+​if (!error)
+​return success;
+​```
+​
+​或
+​
+​```
+​if (!error) { return success };
+​```
+​
+​
+​
+​## 三目运算符
+​
+​三目运算符，? ，只有当它可以增加代码清晰度或整洁时才使用。单一的条件都应该优先考虑使用。多条件时通常使用 if 语句会更易懂，或者重构为实例变量。
+​
+​**推荐：**
+​
+​```
+​result = a > b ? x : y;
+​```
+​
+​**反对：**
+​
+​```
+​result = a > b ? x = c > d ? c : d : y;
+​```
+​
+​## 错误处理
+​
+​当引用一个返回错误参数（error parameter）的方法时，应该针对返回值，而非错误变量。
+​
+​**推荐：**
+​
+​```
+​NSError *error;
+​if (![self trySomethingWithError:&error]) {
+​// 处理错误
+​}
+​```
+​
+​**反对：**
+​
+​```
+​NSError *error;
+​[self trySomethingWithError:&error];
+​if (error) {
+​// 处理错误
+​}
+​```
+​
+​一些苹果的 API 在成功的情况下会写一些垃圾值给错误参数（如果非空），所以针对错误变量可能会造成虚假结果（以及接下来的崩溃）。
+​
+​
+​
+​## 方法
+​
+​在方法签名中，在 -/+ 符号后应该有一个空格。方法片段之间也应该有一个空格。
+​
+​**推荐：**
+​
+​```
+​- (void)setExampleText:(NSString *)text image:(UIImage *)image;
+​```
+​
+​## 变量
+​
+​变量名应该尽可能命名为描述性的。除了 `for()` 循环外，其他情况都应该避免使用单字母的变量名。 星号表示指针属于变量，例如：`NSString *text` 不要写成 `NSString* text` 或者 `NSString * text` ，常量除外。 尽量定义属性来代替直接使用实例变量。除了初始化方法（`init`， `initWithCoder:`，等）， `dealloc` 方法和自定义的 setters 和 getters 内部，应避免直接访问实例变量。更多有关在初始化方法和 dealloc 方法中使用访问器方法的信息，参见[这里](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html#//apple_ref/doc/uid/TP40004447-SW6)。
+​
+​**推荐：**
+​
+​```
+​@interface NYTSection: NSObject
+​
+​@property (strong, nonatomic) NSString *headline;
+​
+​@end
+​```
+​
+​**反对：**
+​
+​```
+​@interface NYTSection : NSObject {
+​NSString *headline;
+​}
+​```
+​
+​
+​
+​## 变量限定符
+​
+​当涉及到在 ARC 中被引入变量限定符时， 限定符 (`__strong`, `__weak`, `__unsafe_unretained`, `__autoreleasing`) 应该位于变量类型之前，
+​
+​如：`__weak NSString * text`。
+​
+​## init 和 dealloc
+​
+​`dealloc` 方法应该放在实现文件的最上面，并且刚好在 `@synthesize` 和 `@dynamic` 语句的后面。在任何类中，`init` 都应该直接放在 `dealloc` 方法的下面。
+​
+​`init` 方法的结构应该像这样：
+​
+​```
+​- (instancetype)init {
+​if (self = [super init]) {
+​// Custom initialization
+​}
+​
+​return self;
+​}
+​```
+​
+​## 字面量
+​
+​每当创建 `NSString`， `NSDictionary`， `NSArray`，和 `NSNumber` 类的不可变实例时，都应该使用字面量。要注意 `nil` 值不能传给 `NSArray` 和 `NSDictionary` 字面量，这样做会导致崩溃。
+​
+​**推荐：**
+​
+​```
+​NSArray *names = @[@"Brian", @"Matt", @"Chris", @"Alex", @"Steve", @"Paul"];
+​NSDictionary *productManagers = @{@"iPhone" : @"Kate", @"iPad" : @"Kamal", @"Mobile Web" : @"Bill"};
+​NSNumber *shouldUseLiterals = @YES;
+​NSNumber *buildingZIPCode = @10018;
+​```
+​
+​**反对：**
+​
+​```
+​NSArray *names = [NSArray arrayWithObjects:@"Brian", @"Matt", @"Chris", @"Alex", @"Steve", @"Paul", nil];
+​NSDictionary *productManagers = [NSDictionary dictionaryWithObjectsAndKeys: @"Kate", @"iPhone", @"Kamal", @"iPad", @"Bill", @"Mobile Web", nil];
+​NSNumber *shouldUseLiterals = [NSNumber numberWithBool:YES];
+​NSNumber *buildingZIPCode = [NSNumber numberWithInteger:10018];
+​```
+​
+​
+​
+​## CGRect 函数
+​
+​当访问一个 `CGRect` 的 `x`， `y`， `width`， `height` 时，应该使用[`CGGeometry` 函数](http://developer.apple.com/library/ios/#documentation/graphicsimaging/reference/CGGeometry/Reference/reference.html)代替直接访问结构体成员。苹果的 `CGGeometry` 参考中说到：
+​
+​> All functions described in this reference that take CGRect data structures as inputs implicitly standardize those rectangles before calculating their results. For this reason, your applications should avoid directly reading and writing the data stored in the CGRect data structure. Instead, use the functions described here to manipulate rectangles and to retrieve their characteristics.
+​
+​**推荐：**
+​
+​```
+​CGRect frame = self.view.frame;
+​
+​CGFloat x = CGRectGetMinX(frame);
+​CGFloat y = CGRectGetMinY(frame);
+​CGFloat width = CGRectGetWidth(frame);
+​CGFloat height = CGRectGetHeight(frame);
+​```
+​
+​**反对：**
+​
+​```
+​CGRect frame = self.view.frame;
+​
+​CGFloat x = frame.origin.x;
+​CGFloat y = frame.origin.y;
+​CGFloat width = frame.size.width;
+​CGFloat height = frame.size.height;
+​```
+​
+​## 常量
+​
+​常量首选内联字符串字面量或数字，因为常量可以轻易重用并且可以快速改变而不需要查找和替换。常量应该声明为 `static` 常量而不是 `#define` ，除非非常明确地要当做宏来使用。
+​
+​**推荐：**
+​
+​```
+​static NSString * const NYTAboutViewControllerCompanyName = @"The New York Times Company";
+​
+​static const CGFloat NYTImageThumbnailHeight = 50.0;
+​```
+​
+​**反对：**
+​
+​```
+​#define CompanyName @"The New York Times Company"
+​
+​#define thumbnailHeight 2
+​```
+​
+​## 枚举类型
+​
+​当使用 `enum` 时，建议使用新的基础类型规范，因为它具有更强的类型检查和代码补全功能。现在 SDK 包含了一个宏来鼓励使用使用新的基础类型 - `NS_ENUM()`
+​
+​**推荐：**
+​
+​```
+​typedef NS_ENUM(NSInteger, NYTAdRequestState) {
+​NYTAdRequestStateInactive,
+​NYTAdRequestStateLoading
+​};
+​```
+​
+​## 位掩码
+​
+​当用到位掩码时，使用 `NS_OPTIONS` 宏。
+​
+​**举例：**
+​
+​```
+​typedef NS_OPTIONS(NSUInteger, NYTAdCategory) {
+​NYTAdCategoryAutos      = 1 << 0,
+​NYTAdCategoryJobs       = 1 << 1,
+​NYTAdCategoryRealState  = 1 << 2,
+​NYTAdCategoryTechnology = 1 << 3
+​};
+​```
+​
+​## 私有属性
+​
+​私有属性应该声明在类实现文件的延展（匿名的类目）中。
+​
+​**推荐：**
+​
+​```
+​@interface NYTAdvertisement ()
+​
+​@property (nonatomic, strong) GADBannerView *googleAdView;
+​@property (nonatomic, strong) ADBannerView *iAdView;
+​@property (nonatomic, strong) UIWebView *adXWebView;
+​
+​@end
+​```
+​
+​## 图片命名
+​
+​图片名称应该被统一命名以保持组织的完整。它们应该被命名为一个说明它们用途的驼峰式字符串，其次是自定义类或属性的无前缀名字（如果有的话），然后进一步说明颜色 和/或 展示位置，最后是它们的状态。
+​
+​**推荐：**
+​
+​- `RefreshBarButtonItem` / `RefreshBarButtonItem@2x` 和 `RefreshBarButtonItemSelected` / `RefreshBarButtonItemSelected@2x`
+​- `ArticleNavigationBarWhite` / `ArticleNavigationBarWhite@2x` 和 `ArticleNavigationBarBlackSelected` / `ArticleNavigationBarBlackSelected@2x`.
+​
+​图片目录中被用于类似目的的图片应归入各自的组中。
+​
+​## 布尔
+​
+​因为 `nil` 解析为 `NO`，所以没有必要在条件中与它进行比较。永远不要直接和 `YES` 进行比较，因为 `YES` 被定义为 1，而 `BOOL` 可以多达 8 位。
+​
+​这使得整个文件有更多的一致性和更大的视觉清晰度。
+​
+​**推荐：**
+​
+​```
+​if (!someObject) {
+​}
+​```
+​
+​**反对：**
+​
+​```
+​if (someObject == nil) {
+​}
+​```
+​
+​------
+​
+​**对于 BOOL 来说, 这有两种用法:**
+​
+​```
+​if (isAwesome)
+​if (![someObject boolValue])
+​```
+​
+​**反对：**
+​
+​```
+​if ([someObject boolValue] == NO)
+​if (isAwesome == YES) // 永远别这么做
+​```
+​
+​------
+​
+​如果一个 `BOOL` 属性名称是一个形容词，属性可以省略 “is” 前缀，但为 get 访问器指定一个惯用的名字，例如：
+​
+​```
+​@property (assign, getter=isEditable) BOOL editable;
+​```
+​
+​内容和例子来自 [Cocoa 命名指南](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingIvarsAndTypes.html#//apple_ref/doc/uid/20001284-BAJGIIJE) 。
+​
+​## 单例
+​
+​单例对象应该使用线程安全的模式创建共享的实例。
+​
+​```
+​+ (instancetype)sharedInstance {
+​static id sharedInstance = nil;
+​
+​static dispatch_once_t onceToken;
+​dispatch_once(&onceToken, ^{
+​sharedInstance = [[self alloc] init];
+​});
+​
+​return sharedInstance;
+​}
+​```
+​
+​这将会预防[有时可能产生的许多崩溃](http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html)。
+​
+​## 导入
+​
+​如果有一个以上的 import 语句，就对这些语句进行[分组](http://ashfurrow.com/blog/structuring-modern-objective-c)。每个分组的注释是可选的。
+​注：对于模块使用 [@import](http://clang.llvm.org/docs/Modules.html#using-modules) 语法。
+​
+​```
+​// Frameworks
+​@import QuartzCore;
+​
+​// Models
+​#import "NYTUser.h"
+​
+​// Views
+​#import "NYTButton.h"
+​#import "NYTUserView.h"
+​```
+​
+​## Xcode 工程
+​
+​为了避免文件杂乱，物理文件应该保持和 Xcode 项目文件同步。Xcode 创建的任何组（group）都必须在文件系统有相应的映射。为了更清晰，代码不仅应该按照类型进行分组，也可以根据功能进行分组。
+​
+​如果可以的话，尽可能一直打开 target Build Settings 中 "Treat Warnings as Errors" 以及一些[额外的警告](http://boredzo.org/blog/archives/2009-11-07/warnings)。如果你需要忽略指定的警告,使用 [Clang 的编译特性](http://clang.llvm.org/docs/UsersManual.html#controlling-diagnostics-via-pragmas) 。
+​
+​
+​
+​# 命名和使用原则
+​
+​不允许使用自定义的缩写
+​
+​**推荐：**
+​
+​```
+​UIButton *settingsButton;
+​```
+​
+​**反对：**
+​
+​```
+​UIButton *setBut;
+​```
+​
+​## 通用原则
+​
+​**清晰** *Clarity*
+​
+​- 命名应该尽可能的**清晰**和**简洁**。
+​
+​- 通常，不要使用缩写，即使是名字很长。
+​
+​```
+​setBackgroundColor: / setBkgdColor:
+​destinationSelection / destSel
+​```
+​
+​你通常认为的缩写（abbreviation  [əˌbrivɪ'eʃən]），并不能清晰的表达其你想表达的意思。不同文化和语言背景上其所代表的意思会截然不同。
+​
+​- 然而，一些通用且历史悠久的缩写，是可以使用。[Acceptable Abbreviations and Acronyms](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/APIAbbreviations.html#//apple_ref/doc/uid/20001285-BCIHCGAE)
+​
+​- 避免在API中使用含糊不清的命名，比如方法名：
+​
+​| Code        | Commentary         |
+​| ----------- | ------------------ |
+​| sendPort    | 这是一个发送操作还是返回一个端口   |
+​| displayName | 这是一个显示操作还是返回一个name |
+​
+​​​
+​​
+​​
+​​**一致性** *Consistency*
+​​
+​​- 使用和Cocoa programmatic interfaces一致的命名，如果不确定可以参考，参考文档的头文件。
+​​
+​​- 一致性的重要性也体现在，一个类的多态上。同一个操作在不同类中，函数命名应当是一致的。
+​​
+​​i.e.` - (NSInteger)tag` `setValue:`
+​​
+​​**非自指** *No Self Reference*
+​​
+​​- 命名不应当自指。
+​​
+​​```
+​​NSString          Good.
+​​NSStringObject      Self-referential.
+​​```
+​​
+​​- 常量／枚举是个例外，Constants应当能自己表达自身意思。
+​​
+​​
+​​
+​​
+​​
+​​### 前缀 Prefixes
+​​
+​​Objective-C没有命名空间，Prefixes一定程度上用作命名空间。解决命名冲突。
+​​
+​​- prefix由两个或者三个大写字母构成。
+​​- prefix用于定义classes、protocols、functions、constants和typedef structures中时候。
+​​- 不要用在定义methods，方法已经存在于类的命名空间，也不要用在 fields定义中。
+​​
+​​
+​​
+​​
+​​
+​​### 类和协议的命名
+​​
+​​一个类命名应当包含一个名词（noun）能够清晰的表示类。也应该有合适的prefix。Foundation和Frameworks都是很好的例子。
+​​
+​​协议（protocols）的命名应当和它所包含的一组行为相符合。
+​​
+​​- 大部分协议中的方法，不应该和特定的类关联（是一组行为抽象）。协议和类的命名不应该让人产生困惑。一个通用的做法是协议用动名词（gerund[^5] ..ing）形式：
+​​
+​​|    代码     |     说明      |
+​​| :-------: | :---------: |
+​​| NSLocking |    Good.    |
+​​|  NSLock   | Poor(像是一个类) |
+​​
+​​
+​​
+​​- 有些协议包含一些不相关的methods（原则上应当分成若干小协议）。
+​​
+​​> NSObject
+​​
+​​
+​​
+​​
+​​
+​​
+​​## 方法命名 Nameing Methods
+​​
+​​本节讨论方法命名。
+​​
+​​### 通用规则
+​​
+​​在命名方法的时候，有一些通用的指导方针需要遵守：
+​​
+​​- 小写字母开头之后的单词首字母大写（小驼峰式命名），不需要前缀。有两个例外：
+​​
+​​- 当方法是well-known acronym 开头的时候字母不小写。
+​​- 在命名私有方法或者分组一类方法的时候可以带前缀。
+​​
+​​- 当方法表示一个动作（action）的时候，方法名动词（verb）开头。
+​​
+​​```
+​​- (void)invokeWithTarget:(id)target;
+​​- (void)selectTabViewItem:(NSTabViewItem *)tabViewItem
+​​```
+​​
+​​不要使用“do”或者”does“作为方法的一部分，因为助动词[^6]（auxiliary verbs）很少有实际意思。同样，不要在动词后面添加没用的副词[^7]和形容词。
+​​
+​​- 如果方法返回一个receiver的属性，方法名字紧跟attribute之后。不要使用“get”，除非间接的返回一个或者多个值
+​​
+​​```
+​​- (NSSize)cellSize;   ✔️
+​​- (NSSize)calcCellSize;
+​​- (NSSize)getCellSize;
+​​```
+​​
+​​- 方法不可忽略lable
+​​
+​​- 参数前面应当有描述其意的单词
+​​
+​​```
+​​- (id)viewWithTag:(NSInteger)aTag;  ✔️
+​​- (id)taggedView:(int)aTag;
+​​```
+​​
+​​- 在参数label中不要使用“and”
+​​
+​​- 如果方法描述两个分开的action，用“and”连接
+​​
+​​```
+​​- (BOOL)openFile:(NSString *)fullPath withApplication:(NSString *)appName andDeactivate:(BOOL)flag;
+​​```
+​​
+​​
+​​
+​​
+​​### 访问方法 Accessor Methods
+​​
+​​- 属性表达式为名词：
+​​
+​​`- (type)noun;`
+​​
+​​`- (void)setNoun:(type)aNoun;`
+​​
+​​例如：
+​​
+​​```
+​​- (NSString *)title;
+​​- (void)setTitle:(NSString *)aTitle;
+​​```
+​​
+​​- 属性表达式为形容词：
+​​
+​​`- (type)isAdjective;`
+​​
+​​`- (void)setAdjective:(BOOL)flag;`
+​​
+​​例如：
+​​
+​​```
+​​- (BOOL)isEditable;
+​​- (void)setEditable:(BOOL)flag;
+​​```
+​​
+​​- 属性表达式为动词：
+​​
+​​`- (type)verbObject;`
+​​
+​​`- (void)setVerbObject:(BOOL)flag;`
+​​
+​​例如：
+​​
+​​```
+​​- (BOOL)showsAlpha;
+​​- (void)setShowsAlpha:(BOOL)flag;
+​​```
+​​
+​​动词通常用现在时。
+​​
+​​- 使用情态动词（modal verbs）像“can","should","will"，使命名更加清晰，但是不要使用do／does。
+​​
+​​```
+​​- (void)setCanHide:(BOOL)flag;
+​​- (BOOL)canHide;
+​​- (void)setShouldCloseDocument:(BOOL)flag;
+​​- (BOOL)shouldCloseDocument;
+​​
+​​- (void)setDoesAcceptGlyphInfo:(BOOL)flag;
+​​- (BOOL)doesAcceptGlyphInfo;
+​​```
+​​
+​​- 仅仅在间接返回对象／值的时候使用“get”，
+​​
+​​```
+​​- (void)getLineDash:(float *)pattern count:(int *)count phase:(float *)phase;
+​​NSBezierPath.
+​​```
+​​
+​​​​​
+​​​
+​​​
+​​​### 委托方法  Delegate Methods
+​​​
+​​​委托方法是指当确定事件发生的时候调用相应的方法的方法。委托方法有特有的格式，data source 也遵循这一格式。
+​​​
+​​​- 方法名字以发送消息的类开始。
+​​​
+​​​```
+​​​- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(int)row;
+​​​- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename;
+​​​```
+​​​
+​​​省略前缀，且第一个字母小写。
+​​​
+​​​- 当委托方法只有一个参数的时：
+​​​
+​​​```
+​​​- (BOOL)applicationOpenUntitledFile:(NSApplication *)sender;
+​​​```
+​​​
+​​​
+​​​
+​​​
+​​​- 使用“did”，“will”表示时间发生了或者将要发生。
+​​​
+​​​- “should” 询问时间是否发生。
+​​​
+​​​```
+​​​- (BOOL)windowShouldClose:(id)sender;
+​​​```
+​​​
+​​​​​​​
+​​​​
+​​​​### 方法参数
+​​​​
+​​​​- 方法参数不允许出现 point、ptr 、btn等缩写。
+​​​​
+​​​​
+​​​​
+​​​​### 私有方法
+​​​​
+​​​​- 是有方法不允许下划线开头。
+​​​​- 如果要指明类型可以添加前缀`sp_xxxxx`.
+​​​​
+​​​​
+​​​​
+​​​​
+​​​​## 函数命名
+​​​​
+​​​​当可以使用`class methods` & `singleton` 实现操作时，优先使用function实现。
+​​​​
+​​​​- 函数命名规则遵从方法的命名规则，但是有一些区别：
+​​​​
+​​​​- 函数开头要添加prefix。
+​​​​- 首字母大写。
+​​​​
+​​​​- 大部分函数以动词（verb）开头，描述其行为：
+​​​​
+​​​​```
+​​​​NSHighlightRect
+​​​​NSDeallocateObject
+​​​​```
+​​​​
+​​​​当函数是获取属性的时候，遵循如下规则：
+​​​​
+​​​​- 如果函数返回的是其第一个参数的某一属性则省略动词。
+​​​​
+​​​​```
+​​​​unsigned int NSEventMaskFromType(NSEventType type)
+​​​​float NSHeight(NSRect aRect)
+​​​​```
+​​​​
+​​​​- 如果函数是通过引用返回，则需要使用`Get`。
+​​​​
+​​​​```
+​​​​const char *NSGetSizeAndAlignment(const char *typePtr, unsigned int *sizep, unsigned int *alignp)
+​​​​```
+​​​​
+​​​​
+​​​​
+​​​​## 属性（property）和常量
+​​​​
+​​​​此节描述声明属性、instance变量、常量、通知。
+​​​​
+​​​​
+​​​​
+​​​​### 声明属性和实例变量
+​​​​
+​​​​- 属性命名和属性访问命名一样。
+​​​​
+​​​​- 属性尽可能减少声明属性。
+​​​​
+​​​​- 如果属性对外是`readonly`的属性声明中必须体现。
+​​​​
+​​​​```
+​​​​@property (strong, readonly) NSString *title;
+​​​​```
+​​​​
+​​​​
+​​​​
+​​​​### 常量
+​​​​
+​​​​常量作用于常常跨模块，所以命名空间尤为重要。
+​​​​
+​​​​常量声明使用`const`不允许使用`#define`
+​​​​
+​​​​#### 枚举常量
+​​​​
+​​​​枚举常量定义必须指定类型, 推举使用`NS_ENUM`
+​​​​
+​​​​```
+​​​​typedef NS_ENUM(NSUInteger, <#MyEnum#>) {
+​​​​<#MyEnumValueA#>,
+​​​​<#MyEnumValueB#>,
+​​​​<#MyEnumValueC#>,
+​​​​};
+​​​​```
+​​​​
+​​​​
+​​​​
+​​​​#### 用const定义常量
+​​​​
+​​​​const 常量命名参考function命名
+​​​​
+​​​​
+​​​​
+​​​​#### Notifications命名
+​​​​
+​​​​格式：
+​​​​
+​​​​```
+​​​​[Name of associated class] + [Did | Will] + [UniquePartOfName] + Notification
+​​​​
+​​​​example:
+​​​​NSApplicationDidBecomeActiveNotification
+​​​​NSWindowDidMiniaturizeNotification
+​​​​NSTextViewDidChangeSelectionNotification
+​​​​NSColorPanelColorDidChangeNotification
+​​​​
+​​​​```
+​​​​
+​​​​
+​​​​
+​​​​## 参考
+​​​​
+​​​​[1] [纽约时报 移动团队 Objective-C 规范指南](https://github.com/dalonng/objective-c-style-guide/blob/master/README_zh-Hans.md)
+​​​​[2] [Objective-C 风格指南](http://zh-google-styleguide.readthedocs.io/en/latest/google-objc-styleguide/contents/)
+​​​​[3] [Coding Guidelines for Cocoa](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingBasics.html#//apple_ref/doc/uid/20001281-BBCHBFAH)
+​​​​[4] [自指](https://zh.wikipedia.org/wiki/%E8%87%AA%E6%8C%87)
+​​​​[5] [动名词](https://zh.wikipedia.org/wiki/%E5%8B%95%E5%90%8D%E8%A9%9E)
+​​​​[6] [助动词](https://zh.wikipedia.org/wiki/%E5%8A%A9%E5%8B%95%E8%A9%9E)
+​​​​[7] [副词](https://zh.wikipedia.org/wiki/%E5%89%AF%E8%A9%9E)
+​​​​
+
