@@ -23,7 +23,7 @@ tags:
 
 
 
-![componentizationscheme](/Users/wtj/Desktop/huxpro.github.io/img/in-post/componentizationscheme.png)
+![componentizationscheme](BMWB/bmwb.github.io/blob/master/img/in-post/componentizationscheme.png)
 
 
 
