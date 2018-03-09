@@ -23,3 +23,5 @@ tags:
 
 ​	2、[快速搭建个人博客](http://qiubaiying.top/2017/02/06/快速搭建个人博客/#Rename)
 
+​	3、[为博客添加 Gitalk 评论插件](http://qiubaiying.top/2017/12/19/为博客添加-Gitalk-评论插件/)
+
