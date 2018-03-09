@@ -2,7 +2,7 @@
 layout:     post
 title:      "搭建github.io博客"
 subtitle:   "搭建github.io博客笔记"
-date:       2018-03-08
+date:       2018-03-09
 author:     "WTJ"
 header-img: "img/post-bg-js-module.jpg"
 catalog: true
