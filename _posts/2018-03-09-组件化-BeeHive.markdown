@@ -1,0 +1,46 @@
+---
+layout:     post
+title:      "BeeHive"
+subtitle:   "BeeHive"
+date:       2018-03-09
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - 组件化
+
+---
+
+## 前言
+
+近年来，iOS组件化开始是业内非常关注和讨论的一个话题，也出了很多优秀的组件化的思路：[iOS 组件化 —— 路由设计思路分析](http://www.cnblogs.com/oc-bowen/p/6489070.html)。
+
+业界目前的组件化方案虽然甚多，但主要分以下三种：
+
+ - Protocol注册方案
+ - URL注册方案
+ - Target-Action runtime调用方案
+
+
+
+![componentizationscheme](/Users/wtj/Desktop/huxpro.github.io/img/in-post/componentizationscheme.png)
+
+
+
+方案甚多，都有自己的优缺点，这里介绍一下天猫的BeeHive工具，可以帮助你快速实现组件化。
+
+
+
+## 参考：
+
+
+
+​	1、[手机天猫解耦之路](http://www.infoq.com/cn/articles/the-road-of-mobile-tmall-decoupling)
+
+​	2、[iOS组件化方案-总结第一篇](https://www.jianshu.com/p/2cb4cc8d216e)
+
+​	3、[iOS组件化思路－大神博客研读和思考](https://www.jianshu.com/p/afb9b52143d4)
+
+​	4、[[iOS 组件化 —— 路由设计思路分析](http://www.cnblogs.com/oc-bowen/p/6489070.html)](https://www.cnblogs.com/oc-bowen/p/6489070.html)
+
+​	5、[BeeHive](https://github.com/BMWB/BeeHive)
