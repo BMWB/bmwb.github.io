@@ -21,11 +21,7 @@ tags:
  - URL注册方案
  - Target-Action runtime调用方案
 
-
-
-![componentizationscheme](/BMWB/bmwb.github.io/blob/master/img/in-post/componentizationscheme.png)
-
-
+<img class="shadow" src="img/in-post/componentizationscheme.png" width="260">
 
 方案甚多，都有自己的优缺点，这里介绍一下天猫的BeeHive工具，可以帮助你快速实现组件化。
 
