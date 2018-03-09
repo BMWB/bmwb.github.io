@@ -13,10 +13,8 @@ tags:
 
 ## URL 格式
 
----
-scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
-
-		hierarchical part
+```
+                    hierarchical part
         ┌───────────────────┴─────────────────────┐
                     authority               path
         ┌───────────────┴───────────────┐┌───┴────┐
@@ -28,7 +26,9 @@ scheme  user information     host     port                  query         fragme
   └┬┘ └────────────┬───────────────┘
 scheme              path
 
----
+```
+
+
 
 NSURL 根据 [RFC 2396](https://link.jianshu.com?t=http://www.ietf.org/rfc/rfc2396.txt) 的定义提供了只读属性用于获取 URL 每一部分的值：
 
