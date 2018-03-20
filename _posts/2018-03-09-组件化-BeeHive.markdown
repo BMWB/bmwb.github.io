@@ -20,9 +20,9 @@ tags:
  - Protocol注册方案
  - URL注册方案
  - Target-Action runtime调用方案
-<div>
-<img class="shadow" src="/img/in-post/componentizationscheme.png" width="380">
-</div>
+  <div>
+  <img class="shadow" src="/img/in-post/componentizationscheme.png" width="380">
+  </div>
 
 方案甚多，都有自己的优缺点，这里介绍一下天猫的BeeHive工具，可以帮助你快速实现组件化。
 
@@ -41,3 +41,5 @@ tags:
 ​	4、[[iOS 组件化 —— 路由设计思路分析](http://www.cnblogs.com/oc-bowen/p/6489070.html)](https://www.cnblogs.com/oc-bowen/p/6489070.html)
 
 ​	5、[BeeHive](https://github.com/BMWB/BeeHive)
+
+​	6、[BeeHive —— 一个优雅但还在完善中的解耦框架](https://www.jianshu.com/p/24f6299ebe82)
