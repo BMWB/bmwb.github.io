@@ -2,7 +2,7 @@
 layout:     post
 title:      "PaintCode"
 subtitle:   "PaintCode"
-date:       2018-03-020
+date:       2018-03-20
 author:     "WTJ"
 header-img: "img/post-bg-js-module.jpg"
 catalog: true
