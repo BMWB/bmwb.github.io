@@ -21,19 +21,21 @@ PaintCod此时的出现，能帮我们减轻计算的繁琐，节省用代码开
 
 那接下来一起走进PaintCod吧！
 
-## SVG
+###SVG
 
 在运用PaintCode之前呢，我们需要先获取一张SVG格式的文件。
 
-  ```
+```
 SVG可缩放矢量图形（Scalable Vector Graphics）是基于可扩展标记语言（XML），用于描述二维矢量图形的一种图形格式。SVG是W3C("World Wide Web ConSortium" 即 " 国际互联网标准组织")在2000年8月制定的一种新的二维矢量图形格式，也是规范中的网络矢量图形标准。SVG严格遵从XML语法，并用文本格式的描述性语言来描述图像内容，因此是一种和图像分辨率无关的矢量图形格式。
-  ```
+```
 
 如果你想自己做自己的SVG文件，可以像[PaintCode让Logo飞出屏幕](https://www.jianshu.com/p/88da7eaf7c46)中讲的通过Sketch自己导出一张SVG格式的图片，当然你要自己购买Sketch软件，每年好像需要500大洋哦！土豪请随意吧！
 
 如果你只想玩玩快速看一下成果你可以到[iconfount](http://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)自己搜索然后自己下载下来！
 
-##PaintCode
+
+
+###PaintCode
 
 当然你要先到这里[PaintCode](http://www.paintcodeapp.com)下载,不过你可能要先翻墙一下，然后可以免费试用5天玩玩。
 
