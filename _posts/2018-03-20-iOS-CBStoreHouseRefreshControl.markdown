@@ -42,13 +42,51 @@ tags:
 - 确保你使用正确的格式（`{x,y}`）作为坐标。
 - 高亮/加载动画将按照您在plist中声明的相同顺序突出显示每个小节项目，用于`reverseLoadingAnimation`反转动画。
 
+##原理
 
+CBStoreHouseRefreshControl的原理其实还是涂层的概念，通过UIBezierPath在BarItem这个View上绘制一个startPoint开始和endPoint结束的一条线，形成这条线的涂层，代码如下：
 
-##自定义形状绘制
+  ```
+- (void)drawRect:(CGRect)rect {
+	[bezierPath moveToPoint:self.startPoint];
+    [bezierPath addLineToPoint:self.endPoint];
+    [self.color setStroke];
+    bezierPath.lineWidth = self.lineWidth;
+    
+    [bezierPath stroke];
+}
 
-​	使用[PaintCode](http://www.paintcodeapp.com/)来生成`startPoint`和`endPoint`：然后把这些点通过UIBezierPath进行重回。
+  ```
 
-### 参考：
+​    
+
+然后遍历 startPoints和endPoints的数组，绘制出startPoints.count张的涂层，然后涂层覆盖形成最后的图形,代码如下:
+
+  ```
+ NSMutableArray *mutableBarItems = [[NSMutableArray alloc] init];
+    for (int i=0; i<startPoints.count; i++) {
+        
+        CGPoint startPoint = CGPointFromString(startPoints[i]);
+        CGPoint endPoint = CGPointFromString(endPoints[i]);
+
+        BarItem *barItem = [[BarItem alloc] initWithFrame:refreshControl.frame 					startPoint:startPoint endPoint:endPoint color:color lineWidth:lineWidth];
+        barItem.tag = i;
+        barItem.backgroundColor=[UIColor clearColor];
+        barItem.alpha = 0;
+        [mutableBarItems addObject:barItem];
+        [refreshControl addSubview:barItem];
+        
+        [barItem setHorizontalRandomness:refreshControl.horizontalRandomness 					dropHeight:refreshControl.dropHeight];
+ }
+  ```
+
+  
+
+##PaintCode工具
+
+使用[PaintCode](http://www.paintcodeapp.com/)来生成startPoints和endPoints。
+
+### 致谢：
 
 ​	1、[CBStoreHouseRefreshControl](https://github.com/coolbeet/CBStoreHouseRefreshControl)
 
