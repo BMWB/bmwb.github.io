@@ -46,6 +46,8 @@ tags:
 
 ##原理
 
+
+
 ####涂层
 
 CBStoreHouseRefreshControl的原理其实还是涂层的概念，通过UIBezierPath在BarItem这个View上绘制一个startPoint开始和endPoint结束的一条线，形成这条线的涂层，代码如下：
