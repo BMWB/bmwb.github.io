@@ -16,7 +16,7 @@ tags:
 ​	CBStoreHouseRefreshControl是一个可自定义形状的刷新控件,通过plist文件加载所需要的自定义点数组绘制任何形状,效果如下所示：
 
 <div>
-<img class="shadow" src="/img/in-post/CBStoreHouseRefreshControl1.gif" width="380">
+    <img class="shadow" src="/img/in-post/CBStoreHouseRefreshControl1.gif" width="380">
 </div>
 
 ## 使用自定义形状
@@ -25,19 +25,24 @@ tags:
 
 所有`BarItem`将共享一个坐标系，其原点位于左上角。例如，如果你想绘制一个正方形，plist将看起来像这样：
 
-​<div>
-​<img class="shadow" src="/img/in-post/square.png" width="380">
-​</div>
+<div>
+
+​   <img class="shadow" src="/img/in-post/square.png" width="380">
+
+</div>
+
 
 结果将如下所示：
 
 <div>
-<img class="shadow" src="/img/in-post/square.gif" width="380">
+    <img class="shadow" src="/img/in-post/square.gif" width="380">
 ​</div>
 
 - 确保你把正确的键是`startPoints`和`endPoints`。
 - 确保你使用正确的格式（`{x,y}`）作为坐标。
 - 高亮/加载动画将按照您在plist中声明的相同顺序突出显示每个小节项目，用于`reverseLoadingAnimation`反转动画。
+
+
 
 ##自定义形状绘制
 
