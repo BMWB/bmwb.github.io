@@ -44,6 +44,8 @@ tags:
 
 ##原理
 
+####涂层
+
 CBStoreHouseRefreshControl的原理其实还是涂层的概念，通过UIBezierPath在BarItem这个View上绘制一个startPoint开始和endPoint结束的一条线，形成这条线的涂层，代码如下：
 
   ```
@@ -60,7 +62,9 @@ CBStoreHouseRefreshControl的原理其实还是涂层的概念，通过UIBezierP
 
 ​    
 
-然后遍历 startPoints和endPoints的数组，绘制出startPoints.count张的涂层，然后涂层覆盖形成最后的图形,代码如下:
+#### 加载动画
+
+遍历 startPoints和endPoints的数组，绘制出startPoints.count张的涂层，然后涂层覆盖形成最后的图形,代码如下:
 
   ```
  NSMutableArray *mutableBarItems = [[NSMutableArray alloc] init];
@@ -80,11 +84,78 @@ CBStoreHouseRefreshControl的原理其实还是涂层的概念，通过UIBezierP
  }
   ```
 
+#### 刷新动画
+
+通过改变alpha值来改变亮度，实现亮度的刷新效果
+
+```
+- (void)barItemAnimation:(BarItem*)barItem
+{
+    if (self.state == CBStoreHouseRefreshControlStateRefreshing) {
+        barItem.alpha = 1;
+        [barItem.layer removeAllAnimations];
+        [UIView animateWithDuration:kloadingIndividualAnimationTiming animations:^{
+            barItem.alpha = kbarDarkAlpha;
+        } completion:^(BOOL finished) {
+            
+        }];
+        
+        BOOL isLastOne;
+        if (self.reverseLoadingAnimation)
+            isLastOne = barItem.tag == 0;
+        else
+            isLastOne = barItem.tag == self.barItems.count-1;
+            
+        if (isLastOne && self.state == CBStoreHouseRefreshControlStateRefreshing) {
+            [self startLoadingAnimation];
+        }
+    }
+}
+```
+
+
+
+#### 消失动画
+
+通过CADisplayLink定时刷新UI，再对barItem.transform旋转变形
+
+
+
+```
+- (void)updateBarItemsWithProgress:(CGFloat)progress
+{
+    for (BarItem *barItem in self.barItems) {
+        NSInteger index = [self.barItems indexOfObject:barItem];
+        CGFloat startPadding = (1 - self.internalAnimationFactor) / self.barItems.count * index;
+        CGFloat endPadding = 1 - self.internalAnimationFactor - startPadding;
+        
+        if (progress == 1 || progress >= 1 - endPadding) {
+            barItem.transform = CGAffineTransformIdentity;
+            barItem.alpha = kbarDarkAlpha;
+        }
+        else if (progress == 0) {
+            [barItem setHorizontalRandomness:self.horizontalRandomness dropHeight:self.dropHeight];
+        }
+        else {
+            CGFloat realProgress;
+            if (progress <= startPadding)
+                realProgress = 0;
+            else
+                realProgress = MIN(1, (progress - startPadding)/self.internalAnimationFactor);
+            barItem.transform = CGAffineTransformMakeTranslation(barItem.translationX*(1-realProgress), -self.dropHeight*(1-realProgress));
+            barItem.transform = CGAffineTransformRotate(barItem.transform, M_PI*(realProgress));
+            barItem.transform = CGAffineTransformScale(barItem.transform, realProgress, realProgress);
+            barItem.alpha = realProgress * kbarDarkAlpha;
+        }
+    }
+}
+```
+
   
 
-##PaintCode工具
+####获取坐标数组
 
-使用[PaintCode](http://www.paintcodeapp.com/)来生成startPoints和endPoints。
+使用[PaintCode](http://www.paintcodeapp.com/)来生成startPoints和endPoints,很不错的软件，减少你计算的麻烦，不过需要花钱 -_-!!。
 
 ### 致谢：
 
