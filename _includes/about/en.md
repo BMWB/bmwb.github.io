@@ -2,8 +2,12 @@
 
 > Yet another man.
 
-Hey, I am wang tianji, the iOS program ape, the degree of evolution is not clear, and it is often found in [books](https://www.jianshu.com/u/5a87d9fc4ecc)、[Github](https://github.com/BMWB) 、[CSDN](http://blog.csdn.net/qq_30798575) and other places.
+Hey, I'm Mr. Wang, and now I'm an iOS siege lion, with an unknown degree of evolution, mostly in the areas of Jane book, Github and CSDN.
 
-I'm an iOS engineer. I was recruited as an iOS engineer for renren and an iOS engineer.
+Occupation: iOS engineer.
 
-Interest is tourism, badminton, movies, wild history...
+Career: I was recruited as an iOS engineer for everyone's art.
+
+ 	     Currently, he is an iOS engineer of the target network.
+
+Hobbies: rock and roll, travel, badminton, movies, wild history...

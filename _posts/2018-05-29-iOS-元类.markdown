@@ -182,5 +182,5 @@ typedef struct objc_object *id;
 
 5、[编译Runtime源码objc4-706](http://blog.csdn.net/wotors/article/details/54426316)
 
-6、[Metaclass](https://en.wikipedia.org/wiki/Metaclass#In_Objective-C)](https://www.jianshu.com/p/492be28d63c4)
+6、[Metaclass](https://en.wikipedia.org/wiki/Metaclass#In_Objective-C)
 
