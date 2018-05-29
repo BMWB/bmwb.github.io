@@ -1,0 +1,186 @@
+---
+layout:     post
+title:      "objc-runtime之objc_object和objc_class"
+subtitle:   "objc-runtime之objc_object和objc_class"
+date:       2018-05-29
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+
+---
+
+## 摘要
+
+阅读objc-rutime源代码。Objective-C是C的超集,且类和对象和Objective-C中的核心概念，阅读就从类和对象在源码中的实现开始入手在`objc.h`定义了两个重要的类型`Class`和`id`：
+
+```
+// objc.h
+typedef struct objc_class *Class;
+typedef struct objc_object *id;
+```
+
+本文就主要就讨论`objc_class`和`objc_object`，还有对应的两个概念**类**和**元类**
+
+
+
+## 代码在哪里？
+
+objc-runtime 代码可以从苹果的开元网站下载[objc４](https://opensource.apple.com/release/macos-10123.html)。下载的代码不能直接编译，需要添加很多依赖头文件，这种事肯定有很多耐不住寂寞的人去做，Ｓｏ这里[objc - 编译Runtime源码objc4-706](http://blog.csdn.net/wotors/article/details/54426316)有完整的步骤，里面也有github地址. 加入不需要编译，下载源码,直接阅读就可以了。
+
+
+
+##objc_object 和 objc_class
+
+`Class`和`id`是runtime对外暴露的两个类型，
+
+```
+// objc.h
+/// An opaque type that represents an Objective-C class.
+typedef struct objc_class *Class;
+ 
+/// Represents an instance of a class.
+struct objc_object {
+    Class isa  OBJC_ISA_AVAILABILITY;
+};
+ 
+/// A pointer to an instance of a class.
+typedef struct objc_object *id;
+```
+
+通过注释可以了解到`Class`是一个当做Objective-C类的一个透明类型。而`id` 是类的一个实例。一个是类一个是对象。虽然`objc_object`定义很简单，但是这个隐藏很多细节，通过源代码的定义，来一窥究竟。
+
+```
+
+struct objc_object {
+private:
+    isa_t isa;
+public:
+    // ISA() assumes this is NOT a tagged pointer object
+    Class ISA();
+ 
+    // getIsa() allows this to be a tagged pointer object
+    Class getIsa();
+  ...
+  ...
+  ...
+};
+ 
+struct objc_class : objc_object {
+    // Class ISA;
+    Class superclass;
+    cache_t cache;             // formerly cache pointer and vtable
+    class_data_bits_t bits;    // class_rw_t * plus custom rr/alloc flags
+ 
+    class_rw_t *data() { 
+        return bits.data();
+    }
+    void setData(class_rw_t *newData) {
+        bits.setData(newData);
+    }
+  ...
+  ...
+  ...
+};
+```
+
+**这个是runtim中对objc_object 和 objc_class的定义其中省略了很多方法，关注数据，从内部定义和对外暴露的定义objc_object结构基本一样只是Class isa变成了isa_t isa。为了了解两者的联系和区别，继续看isa_t结构：**
+
+```
+
+union isa_t 
+{
+    isa_t() { }
+    isa_t(uintptr_t value) : bits(value) { }
+ 
+    Class cls;
+    uintptr_t bits;
+ 
+# if __arm64__
+#   define ISA_MASK        0x0000000ffffffff8ULL
+#   define ISA_MAGIC_MASK  0x000003f000000001ULL
+#   define ISA_MAGIC_VALUE 0x000001a000000001ULL
+    struct {
+        uintptr_t indexed           : 1;
+        uintptr_t has_assoc         : 1;
+        uintptr_t has_cxx_dtor      : 1;
+        uintptr_t shiftcls          : 33; // MACH_VM_MAX_ADDRESS 0x1000000000
+        uintptr_t magic             : 6;
+        uintptr_t weakly_referenced : 1;
+        uintptr_t deallocating      : 1;
+        uintptr_t has_sidetable_rc  : 1;
+        uintptr_t extra_rc          : 19;
+#       define RC_ONE   (1ULL<<45)
+#       define RC_HALF  (1ULL<<18)
+    };
+};
+```
+
+
+
+`isa_t`是一个联合类型从定义可知`Class isa`和`isa_t isa`确实等价都是指针类型。
+
+> [uintptr_t](http://stackoverflow.com/questions/1845482/what-is-uintptr-t-data-type)是一个无符号整形，正好可以存一个指针。
+
+去除不关心的内容`objc_object` 和`objc_class`定义：
+
+```
+struct objc_object {
+    Class isa;
+};
+ 
+struct objc_class {
+    Class isa;
+    Class superclass;
+    cache_t cache;             // formerly cache pointer and vtable
+    class_data_bits_t bits;    // class_rw_t * plus custom rr/alloc flags
+};
+ 
+typedef struct objc_class *Class;
+typedef struct objc_object *id;
+```
+
+<div>
+
+​    <img class="shadow" src="/img/in-post/objcruntime.png" width="760">
+
+</div>
+
+
+
+## 类和元类
+
+很多博客中都提到了元类，runtime源码中也通用metaclass这个概念，那元类到底是什么呢？
+
+> In [object-oriented](https://en.wikipedia.org/wiki/Object-oriented_programming) [programming](https://en.wikipedia.org/w/index.php?title=Computer_programmin&action=edit&redlink=1), a **metaclass** is a [class](https://en.wikipedia.org/wiki/Class_(computer_science)) whose instances are classes. Just as an ordinary class defines the behavior of certain objects, a metaclass defines the behavior of certain classes and their instances. Not all object-oriented programming [languages](https://en.wikipedia.org/wiki/Programming_languages) support metaclasses. Among those that do, the extent to which metaclasses can override any given aspect of class behavior varies. Metaclasses can be implemented by having classes be [first-class citizen](https://en.wikipedia.org/wiki/First-class_citizen), in which case a metaclass is simply an object that constructs classes. Each language has its own [metaobject protocol](https://en.wikipedia.org/wiki/Metaobject_protocol), a set of rules that govern how objects, classes, and metaclasses interact.[[1\]](https://en.wikipedia.org/wiki/Metaclass#cite_note-1)
+
+
+
+每种语言都有自己的**metaobject protocol**，包含对象，类和元类之间的关系,metaobject protocol 定义了一些词汇或者协议来访问和操作对象的结构和行为主要包含：
+
+- Create or delete a new class(创建和销毁一个类)
+- Create a new property or method(创建新的属性或者方法)
+- Cause a class to inherit from a different class ("change the class structure")(修改类的继承结构)
+- Generate or change the code defining the methods of a class(生成或者改变类和对象的方法)
+
+<div>
+
+​    <img class="shadow" src="/img/in-post/meta.png" width="380">
+
+</div>
+
+##感谢：
+
+1、[objc sourcecode](https://opensource.apple.com/release/macos-10123.html)
+
+2、[tarballs](https://opensource.apple.com/tarballs/)
+
+3、[lock_private](https://github.com/samdmarshall/OSXPrivateSDK/blob/master/PrivateSDK10.10.sparse.sdk/usr/local/include/os/lock_private.h)
+
+4、[include_next](http://blog.csdn.net/rznice/article/details/7641549)
+
+5、[编译Runtime源码objc4-706](http://blog.csdn.net/wotors/article/details/54426316)
+
+6、[Metaclass](https://en.wikipedia.org/wiki/Metaclass#In_Objective-C)](https://www.jianshu.com/p/492be28d63c4)
+

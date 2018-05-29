@@ -1,0 +1,26 @@
+---
+layout:     post
+title:      "Block原理和循环引用"
+subtitle:   "Block原理和循环引用"
+date:       2018-05-29
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+
+---
+
+## 前言
+
+Block是现在iOS开发使用中几乎无法绕过的一个问题，不仅工作中使用，面试也是必问问题，这篇文章旨在探讨Block原理和循环引用等常遇问题。
+
+[学会使用Objective-C中的block](https://www.jianshu.com/p/d911cd16c100)中的提到的元类不太清楚，可以看看我另一篇文章《objc-runtime之objc_object和objc_class》
+
+
+### 感谢：
+
+​	1、[学会使用Objective-C中的block](https://www.jianshu.com/p/d911cd16c100)
+
+​	2、[iOS中block的循环引用问题](https://www.jianshu.com/p/492be28d63c4)
+
