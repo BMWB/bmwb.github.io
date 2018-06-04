@@ -42,21 +42,26 @@ B.left   =  A.left
 
 
 
-##Cassowary
+##Cassowary算法
 
 `Auto Layout` 内部有专门用来处理约束关系的算法，我一直以为是苹果自家研发的，查阅资料才发现是来自一个叫 `Cassowary` 的算法。
 
 > Cassowary是个解析工具包，能够有效解析线性等式系统和线性不等式系统，用户的界面中总是会出现不等关系和相等关系，Cassowary开发了一种规则系统可以通过约束来描述视图间关系。约束就是规则，能够表示出一个视图相对于另一个视图的位置。
 >
+> - Auto Layout 的原理就是对**线性方程组或者不等式**的求解。
 > - 戴铭 [<深入剖析Auto Layout，分析iOS各版本新增特性>](https://link.juejin.im?target=https%3A%2F%2Fming1016.github.io%2F2015%2F11%2F03%2Fdeeply-analyse-autolayout%2F)
 
 
 
 ##AutoLayout性能
 
-在对 `Auto Layout` 进行一番了解之后,我们很容易得出 `Auto Layout` 因为多余的计算，性能差于 Frame 的结论。
+在使用 Auto Layout 进行布局时，可以指定一系列的约束，比如视图的高度、宽度等等。而每一个约束其实都是一个简单的线性等式或不等式，整个界面上的所有约束在一起就**明确地（没有冲突）**定义了整个系统的布局。
+
+> 在涉及冲突发生时，Auto Layout 会尝试 break 一些优先级低的约束，尽量满足最多并且优先级最高的约束。
 
 
+
+因为使用 Cassowary 算法解决约束问题就是对线性等式或不等式求解，所以其时间复杂度就是**多项式时间**的，不难推测出，在处理极其复杂的 UI 界面时，会造成性能上的巨大损失。
 
 ##Auto Layout的生命周期
 
@@ -66,4 +71,4 @@ B.left   =  A.left
 
 ​	1、[深入剖析Auto Layout，分析iOS各版本新增特性](https://ming1016.github.io/2015/11/03/deeply-analyse-autolayout/)
 
-​	2、[iOS 上的 FlexBox 布局](https://juejin.im/post/5a33a6926fb9a045104a8d3c#heading-5)
+​	2、[从 Auto Layout 的布局算法谈性能](https://draveness.me/layout-performance)
