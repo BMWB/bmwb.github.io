@@ -103,6 +103,15 @@ tags:
 
 ![屏幕快照 2017-10-21 下午3.55.17.png](http://upload-images.jianshu.io/upload_images/2280085-ee6d88ae94c8c7ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+####分支
+
+<img class="shadow" src="/img/in-post/jenkins_set_branch.png" width="380">
+
+#### master
+
+<img class="shadow" src="/img/in-post/jenkins_set_master.png" width="380">
+
+
 
 ![屏幕快照 2017-10-18 下午2.14.09.png](http://upload-images.jianshu.io/upload_images/2280085-81b33eadbbf9e655.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -111,6 +120,9 @@ tags:
 
 
 ![屏幕快照 2017-10-18 下午2.14.25.png](http://upload-images.jianshu.io/upload_images/2280085-1e7d1d71ca827267.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
 ## 五.脚本文件
 
 - ##### gym 命令
