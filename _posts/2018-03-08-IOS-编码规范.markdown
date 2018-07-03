@@ -665,6 +665,7 @@ UIButton *setBut;
   ```
   setBackgroundColor: / setBkgdColor:
   destinationSelection / destSel
+  ```
 
 
   ```
@@ -849,7 +850,7 @@ Objective-C没有命名空间，Prefixes一定程度上用作命名空间。解�
 
   ```
   - (void)getLineDash:(float *)pattern count:(int *)count phase:(float *)phase;
-  NSBezierPath.
+      NSBezierPath.
 
 
   ```
@@ -962,7 +963,7 @@ Objective-C没有命名空间，Prefixes一定程度上用作命名空间。解�
 
 枚举常量定义必须指定类型, 推举使用`NS_ENUM`
 
-```
+  ```
 typedef NS_ENUM(NSUInteger, <#MyEnum#>) {
     <#MyEnumValueA#>,
     <#MyEnumValueB#>,
@@ -1008,3 +1009,6 @@ NSColorPanelColorDidChangeNotification
 [6]  <https://zh.wikipedia.org/wiki/%E5%8A%A9%E5%8B%95%E8%A9%9E> 助动词
 
 [7]  <https://zh.wikipedia.org/wiki/%E5%89%AF%E8%A9%9E> 副词
+
+[8] <https://github.com/QianKaiLu/Objective-C-Coding-Guidelines-In-Chinese> Objective-C-Coding-Guidelines-In-Chinese
+```
