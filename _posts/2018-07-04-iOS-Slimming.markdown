@@ -41,3 +41,7 @@ tags:
 2、[iOS代码瘦身实践](https://www.cnblogs.com/wdsunny/p/7486617.html)
 
 3、[iOS安装包瘦身的那些事儿](http://www.mamicode.com/info-detail-1790659.html)
+
+4、[使用Swift3开发了个MacOS的程序可以检测出objc项目中无用方法，然后一键全部清理](https://github.com/ming1016/SMCheckProject)
+
+5、[CATClearProjectTool](https://github.com/CatchZeng/CATClearProjectTool)
