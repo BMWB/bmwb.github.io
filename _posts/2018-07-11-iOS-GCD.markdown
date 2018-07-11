@@ -1,0 +1,19 @@
+---
+layout:     post
+title:      "iOS GCD"
+subtitle:   "GCD"
+date:       2018-07-11
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+---
+
+
+
+
+## 感谢：
+
+1、[细说 GCD（Grand Central Dispatch）如何用](https://ming1016.github.io/2016/01/13/how-to-use-gcd/)
+
