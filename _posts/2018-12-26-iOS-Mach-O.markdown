@@ -1,0 +1,40 @@
+---
+layout:     post
+title:      "Mach-O"
+subtitle:   "Mach-O"
+date:       2018-12-26
+author:     "WTJ"
+header-img: "img/post-bg-js-module.jpg"
+catalog: true
+tags:
+    - iOS
+---
+
+## Mach-O
+
+文件类型：
+
+- Executable： 应用的主要二进制
+- Dylib： 动态链接库（又称 DSO 或 DLL）
+- Bundle： 不能被链接的 Dylib，只能在运行时使用 `dlopen()`加载，可当做 macOS 的插件。
+
+Image： executable，dylib 或 bundle
+Framework： 包含 Dylib 以及资源文件和头文件的文件夹
+
+## 参考
+
+<https://www.jianshu.com/p/bcc7ba20f900>
+
+<https://www.jianshu.com/p/1f22d1e667e3>
+
+<https://blog.csdn.net/Hello_Hwc/article/details/78317863?locationNum=9&fps=1>
+
+<http://yulingtianxia.com/blog/2016/10/30/Optimizing-App-Startup-Time/>
+
+<https://www.jianshu.com/p/f29b59f4c2b9>
+
+https://mp.weixin.qq.com/s/jN3jaNrvXczZoYIRCWZs7w
+
+书籍：iOS-应用逆向与安全
+
+///Users/wtj/Library/Developer/Xcode/DerivedData/ManagerZP-ajvqwzqdjsoofxgjaluybuxquxof/Build/Intermediates.noindex/ManagerZP.build/Debug-iphonesimulator/ManagerZP.build
